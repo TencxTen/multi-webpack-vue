@@ -1,3 +1,3 @@
 <template>
-  <h1>module</h1>
+  <h1>module1</h1>
 </template>

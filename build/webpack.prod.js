@@ -38,13 +38,6 @@ let webpackConfig = {
 				)
 			}
 		}),
-		// new webpack.optimize.CommonsChunkPlugin({
-		// 	name: 'app',
-		// 	chunks: config.entries.map(function(item) {
-		// 		return item.entryName
-		// 	}),
-		// 	minChunks: 3
-		// }),
 		new webpack.optimize.CommonsChunkPlugin({
 			name: 'manifest',
 			minChunks: Infinity
