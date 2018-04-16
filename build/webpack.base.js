@@ -11,8 +11,6 @@ config.entries.forEach(function(entry) {
 	entries[entry.entryName] = entry.entry
 })
 
-entries.vendor = ['vue']
-
 function resolve(dir) {
 	return path.join(__dirname, '..', dir)
 }
@@ -29,7 +27,7 @@ let webpackConfig = {
 	},
 	module: {
 		noParse: function(content) {
-			return /jquery/.test(content)
+			return /jquery|Jquery/.test(content)
 		},
 		rules: [
 			{

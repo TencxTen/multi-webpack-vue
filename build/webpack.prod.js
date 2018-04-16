@@ -2,9 +2,12 @@ const webpack = require('webpack')
 const webpackMerge = require('webpack-merge')
 const webpackBaseConfig = require('./webpack.base')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const WebpackChunkHash = require('webpack-chunk-hash')
 const config = require('../config')
 const path = require('path')
 const utils = require('./utils')
+const os = require('os')
+const UglifyJsParallelPlugin = require('webpack-uglify-parallel')
 
 let webpackConfig = {
 	module: {
@@ -23,6 +26,7 @@ let webpackConfig = {
 		new webpack.DefinePlugin({
 			'process.env': config.build.env
 		}),
+		new webpack.HashedModuleIdsPlugin(),
 		new ExtractTextPlugin({
 			filename: config.assetsSubDirectory + '/css/[name].[contenthash:9].css',
 			allChunks: true
@@ -40,17 +44,24 @@ let webpackConfig = {
 		}),
 		new webpack.optimize.CommonsChunkPlugin({
 			name: 'manifest',
-			minChunks: Infinity
+			chunks: ['vendor']
 		}),
 
-		new webpack.HashedModuleIdsPlugin()
+		new WebpackChunkHash()
 	],
 	devtool: config.build.productionSourceMap ? 'source-map' : false
 }
 
 webpackConfig.plugins.push(
-	new webpack.optimize.UglifyJsPlugin({
-		sourceMap: config.build.productionSourceMap
+	new UglifyJsParallelPlugin({
+		workers: os.cpus().length,
+		sourceMap: config.build.productionSourceMap,
+		mangle: true,
+		compressor: {
+			warnings: false,
+			drop_console: true,
+			drop_debugger: true
+		 }
 	})
 )
 

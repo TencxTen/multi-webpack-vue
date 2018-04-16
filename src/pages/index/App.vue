@@ -12,6 +12,8 @@
 
 <script>
 import child from './child/child'
+// import _ from 'lodash'
+
 
 export default {
 	components: {
